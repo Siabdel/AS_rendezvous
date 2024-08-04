@@ -1,0 +1,85 @@
+
+[
+    {
+        "model": "auth.user",
+        "pk": 1,
+        "fields": {
+            "username": "johndoe",
+            "password": "pbkdf2_sha256$260000$...$...",
+            "email": "johndoe@example.com",
+            "is_staff": false,
+            "is_superuser": false,
+            "is_active": true
+        }
+    },
+    {
+        "model": "auth.user",
+        "pk": 2,
+        "fields": {
+            "username": "janedoe",
+            "password": "pbkdf2_sha256$260000$...$...",
+            "email": "janedoe@example.com",
+            "is_staff": false,
+            "is_superuser": false,
+            "is_active": true
+        }
+    },
+    {
+        "model": "yourapp.customer",
+        "pk": 1,
+        "fields": {
+            "user": 1,
+            "phone": "+1234567890"
+        }
+    },
+    {
+        "model": "yourapp.customer",
+        "pk": 2,
+        "fields": {
+            "user": 2,
+            "phone": "+0987654321"
+        }
+    },
+    {
+        "model": "yourapp.customservice",
+        "pk": 1,
+        "fields": {
+            "name": "Consultation",
+            "duration": "00:30:00",
+            "price": "50.00",
+            "description": "Consultation initiale"
+        }
+    },
+    {
+        "model": "yourapp.customservice",
+        "pk": 2,
+        "fields": {
+            "name": "Follow-up",
+            "duration": "00:15:00",
+            "price": "30.00",
+            "description": "Suivi"
+        }
+    },
+    {
+        "model": "yourapp.customappointment",
+        "pk": 1,
+        "fields": {
+            "customer": 1,
+            "service": 1,
+            "date_time": "2024-08-01T10:00:00Z",
+            "status": "scheduled",
+            "notes": "Première consultation"
+        }
+    },
+    {
+        "model": "yourapp.customappointment",
+        "pk": 2,
+        "fields": {
+            "customer": 2,
+            "service": 2,
+            "date_time": "2024-08-02T11:00:00Z",
+            "status": "scheduled",
+            "notes": "Suivi"
+        }
+    }
+]

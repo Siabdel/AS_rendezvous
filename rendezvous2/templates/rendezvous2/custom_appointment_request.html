@@ -1,0 +1,7 @@
+
+{% extends 'appointment/appointment_request.html' %}
+
+{% block extra_fields %}
+    {{ form.notes.label_tag }}
+    {{ form.notes }}
+{% endblock %}

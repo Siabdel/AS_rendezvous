@@ -1,0 +1,15 @@
+
+{% extends 'base.html' %}
+
+{% block title %}Liste des Services{% endblock %}
+
+{% block content %}
+<h1>Liste des Services</h1>
+<ul>
+    {% for service in services %}
+    <li>{{ service.name }} - {{ service.duration }} minutes - {{ service.price }}€</li>
+    {% empty %}
+    <li>Aucun service disponible.</li>
+    {% endfor %}
+</ul>
+{% endblock %}
