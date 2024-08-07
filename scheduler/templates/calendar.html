@@ -1,0 +1,29 @@
+
+{% extends "base.html" %}
+{% load static scheduletags %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'bower_components/fullcalendar/dist/fullcalendar.min.css' %}">
+{% endblock %}
+
+{% block content %}
+<h1>{{ calendar.name }}</h1>
+<div id="calendar"></div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'bower_components/moment/min/moment.min.js' %}"></script>
+<script src="{% static 'bower_components/fullcalendar/dist/fullcalendar.min.js' %}"></script>
+<script>
+$(document).ready(function() {
+    $('#calendar').fullCalendar({
+        events: '{% url "rendezvous:calendar_events" calendar.slug %}',
+        header: {
+            left: 'prev,next today',
+            center: 'title',
+            right: 'month,agendaWeek,agendaDay'
+        },
+    });
+});
+</script>
+{% endblock %}

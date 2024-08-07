@@ -1,0 +1,12 @@
+
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<h1>Calendriers</h1>
+<ul>
+    {% for calendar in calendars %}
+    <li><a href="{% url 'rendezvous:calendar' calendar.slug %}">{{ calendar.name }}</a></li>
+    {% endfor %}
+</ul>
+{% endblock %}

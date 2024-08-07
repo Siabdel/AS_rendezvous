@@ -16,6 +16,12 @@ from django.utils.translation import gettext_lazy as _
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+PROJECT_PATH = os.path.realpath(os.path.dirname(__file__))
+ADMINS = (
+    # ('Your Name', 'your_email@example.com'),
+)
+
+MANAGERS = ADMINS
 
 
 # Quick-start development settings - unsuitable for production
@@ -42,15 +48,31 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.humanize',
+    # 3rd-party apps
+    'rest_framework', # new
+    'rest_framework.authtoken',
+    "dj_rest_auth",
+    # debug tools
+    'debug_toolbar', # new
+    'django_extensions', # new
+    'corsheaders', 
+    # User Authentication
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+
     'appointment',  # Ajoutez cette ligne
     'django_q',  # Nécessaire pour les tâches en arrière-plan
     # Tiers applications...
     'crispy_forms',
     'crispy_bootstrap5',
+    ## 
+    'schedule',
     # Vos autres applications...
     'customer',  # mes clients
+    'rendezvous',  # ou 'rendezvous2' selon le nom de votre application
     'rendezvous2',  # ou 'rendezvous2' selon le nom de votre application
-    'rest_framework',
 ]
 
 
@@ -66,6 +88,10 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     'django.middleware.locale.LocaleMiddleware',
+     # Add the account middleware:
+    "allauth.account.middleware.AccountMiddleware",
+    # debug 
+    'debug_toolbar.middleware.DebugToolbarMiddleware', # new
 ]
 
 ROOT_URLCONF = "rdv_project.urls"
@@ -75,16 +101,20 @@ TEMPLATES = [
         "BACKEND": "django.template.backends.django.DjangoTemplates",
         "DIRS": [
             os.path.join(BASE_DIR, 'templates'),
-            os.path.join(BASE_DIR, 'templates', 'rendezvous2'),
-            os.path.join(BASE_DIR, 'templates', 'customer'),
-            ],
+            os.path.join(BASE_DIR, 'rendezvous2', 'templates',),
+            os.path.join(BASE_DIR, 'customer', 'templates'),
+            os.path.join(BASE_DIR, 'scheduler', 'templates', ),
+           ],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
                 "django.template.context_processors.debug",
+                'django.template.context_processors.i18n',
+                'django.template.context_processors.media',
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                # autres context processors
             ],
         },
     },
@@ -126,26 +156,66 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
-LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = "UTC"
+# Local time zone for this installation. Choices can be found here:
+# http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
+# although not all choices may be available on all operating systems.
+# In a Windows environment this must be set to your system time zone.
+TIME_ZONE = 'Europe/Paris'
 
+# Language code for this installation. All choices can be found here:
+# http://www.i18nguy.com/unicode/language-identifiers.html
+LANGUAGE_CODE = 'Fr-fr'
+
+DEFAULT_CHARSET='UTF-8'
+
+TIME_ZONE = 'UTC'
+# If you set this to False, Django will make some optimizations so as not
+# to load the internationalization machinery.
 USE_I18N = True
+# If you set this to False, Django will not format dates, numbers and
+# calendars according to the current locale.
+USE_L10N = True
 
-USE_TZ = True
+# If you set this to False, Django will not use timezone-aware datetimes.
+# Lorsque USE_TZ vaut True et que la base de données ne gère pas les fuseaux horaires (par ex. SQLite, MySQL, Oracle), Django lit et écrit les dates/heures en heure locale en fonction de cette option quand elle est définie et en UTC si elle ne l’est pas.
 
+USE_TZ = False
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = "static/"
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, "static" )
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+
+
+# Additional locations of static files
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'staticfiles'),
+    os.path.join(BASE_DIR, 'media'),
+    os.path.join(BASE_DIR, 'media', 'upload'),
+]
+
+## 
+# ManifestStaticFilesStorage is recommended in production, to prevent outdated
+# JavaScript / CSS assets being served from cache (e.g. after a Wagtail upgrade).
+# See https://docs.djangoproject.com/en/4.0/ref/contrib/staticfiles/#manifeststaticfilesstorage
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
+# List of finder classes that know how to find static files in
+# various locations.
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+)
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
-
 
 # Configurez le backend d'e-mail (exemple avec console backend pour le développement)
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
@@ -187,13 +257,6 @@ LOCALE_PATHS = [
 
 # Assurez-vous que ces middlewares sont présents
 
-# Configuration des fichiers statiques et media
-STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
 # Utilisez le modèle utilisateur par défaut de Django
 AUTH_USER_MODEL = 'auth.User'
 
@@ -201,3 +264,49 @@ AUTH_USER_MODEL = 'auth.User'
 CRISPY_TEMPLATE_PACK = 'bootstrap4'  # ou 'bootstrap5' si vous utilisez Bootstrap 5
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
+
+## Scheduler
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES' : [
+        ##'rest_framework.permissions.IsAuthenticated',
+        'rest_framework.permissions.AllowAny',
+    ],
+    'DEFAULT_AUTHENTIFICATION_CLASS' : [
+        'rest_famework.authentification.SessionAuthentification', 
+        'rest_framework.authentification.BasicAuthentification',
+        'rest_framework_simplejwt.authentication.JWTAuthentication', 
+        'rest_framework.authtoken',
+    ] 
+    
+}
+
+# DJANGO REST FRAMEWORKS
+
+CORS_ORIGIN_ALLOW_ALL = True # If this is used then `CORS_ORIGIN_WHITELIST` will not have any effect
+
+CORS_ALLOW_CREDENTIALS = True
+
+CORS_ORIGIN_WHITELIST = [
+    'http://localhost:3000',
+    "http://localhost:8000",
+    'http://localhost:8080',
+] # If this is used, then not need to use `CORS_ORIGIN_ALLOW_ALL = True`
+CORS_ORIGIN_REGEX_WHITELIST = [
+    'http://localhost:3000',
+    'http://localhost:8080',
+]
+
+LOGIN_REDIRECT_URL = "/"
+LOGOUT_URL = "/accounts/login/"
+
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379/1",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    }
+}

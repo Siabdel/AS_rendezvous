@@ -3,6 +3,8 @@ from django.urls import path, include
 from .routes import router
 from rendezvous import views
 
+app_name="rendezvous"
+
 urlpatterns = [
     path('', views.AppointmentListView.as_view(), name='home'),
     path('appointments/', views.AppointmentListView.as_view(), name='appointment_list'),

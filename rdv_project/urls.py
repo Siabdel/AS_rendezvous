@@ -10,7 +10,10 @@ urlpatterns = [
     path('appointments/', include('appointment.urls')),  # Inclut les URLs de django-appointment
     path('i18n/', include('django.conf.urls.i18n')),
     path('customers/', include('customer.urls')),
+    ##
     path('', include('rendezvous2.urls')),
+    path('schedule/', include('schedule.urls')),
+    path('agenda/', include('scheduler.urls')),
 ]
 
 urlpatterns += [

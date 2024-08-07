@@ -1,0 +1,35 @@
+{% extends "rendezvous_base.html" %}
+{% load i18n static %}
+
+{% block head_title %}{% trans "Fullcalendar" %}{% endblock %}
+
+{% block tab_id %}id="home_tab"{% endblock %}
+
+{% block extra_head %}
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.css" rel="stylesheet" />
+{% endblock %}
+<!-- block extra js -->
+{% block extra_js %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.js"></script>
+
+<script>
+$(document).ready(function() {
+    $('#calendar').fullCalendar({
+        events: '{# url "rendezvous:calendar_events" calendar.slug #}',
+        header: {
+            left: 'prev,next today',
+            center: 'title',
+            right: 'month,agendaWeek,agendaDay'
+        },
+    });
+});
+</script>
+{% endblock %}
+ 
+{% block content %}
+<h2> Calendar </h2>
+<div id="calendar"></div>
+
+{% endblock %}

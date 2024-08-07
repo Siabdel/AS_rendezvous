@@ -6,14 +6,18 @@ from .forms import CustomAppointmentForm, CustomServiceForm, StaffMemberForm, Av
 
 @login_required
 def home(request):
-    return render(request, 'rendezvous2/home_page.html')
+    return render(request, 'home_page.html')
+
+@login_required
+def fullcalendar(request):
+    return render(request, 'fullcalendar.html')
 
 
 # Appointment views
 @login_required
 def appointment_list(request):
     appointments = CustomAppointment.objects.all()
-    return render(request, 'rendezvous2/appointment_list.html', {'appointments': appointments})
+    return render(request, 'appointment_list.html', {'appointments': appointments})
 
 @login_required
 def appointment_create(request):
@@ -25,7 +29,7 @@ def appointment_create(request):
             return redirect('rendezvous2:appointment_list')
     else:
         form = CustomAppointmentForm()
-    return render(request, 'rendezvous2/appointment_form.html', {'form': form})
+    return render(request, 'appointment_form.html', {'form': form})
 
 @login_required
 def appointment_update(request, pk):
@@ -38,7 +42,7 @@ def appointment_update(request, pk):
             return redirect('rendezvous2:appointment_list')
     else:
         form = CustomAppointmentForm(instance=appointment)
-    return render(request, 'rendezvous2/appointment_form.html', {'form': form})
+    return render(request, 'appointment_form.html', {'form': form})
 
 @login_required
 def appointment_delete(request, pk):
@@ -47,13 +51,13 @@ def appointment_delete(request, pk):
         appointment.delete()
         messages.success(request, 'Rendez-vous supprimé avec succès.')
         return redirect('rendezvous2:appointment_list')
-    return render(request, 'rendezvous2/appointment_confirm_delete.html', {'appointment': appointment})
+    return render(request, 'appointment_confirm_delete.html', {'appointment': appointment})
 
 # Service views
 @login_required
 def service_list(request):
     services = CustomService.objects.all()
-    return render(request, 'rendezvous2/service_list.html', {'services': services})
+    return render(request, 'service_list.html', {'services': services})
 
 @login_required
 def service_create(request):
@@ -65,7 +69,7 @@ def service_create(request):
             return redirect('rendezvous2:service_list')
     else:
         form = CustomServiceForm()
-    return render(request, 'rendezvous2/service_form.html', {'form': form})
+    return render(request, 'service_form.html', {'form': form})
 
 @login_required
 def service_update(request, pk):
@@ -78,7 +82,7 @@ def service_update(request, pk):
             return redirect('rendezvous2:service_list')
     else:
         form = CustomServiceForm(instance=service)
-    return render(request, 'rendezvous2/service_form.html', {'form': form})
+    return render(request, 'service_form.html', {'form': form})
 
 @login_required
 def service_delete(request, pk):
@@ -87,13 +91,13 @@ def service_delete(request, pk):
         service.delete()
         messages.success(request, 'Service supprimé avec succès.')
         return redirect('rendezvous2:service_list')
-    return render(request, 'rendezvous2/service_confirm_delete.html', {'service': service})
+    return render(request, 'service_confirm_delete.html', {'service': service})
 
 # StaffMember views
 @login_required
 def staff_member_list(request):
     staff_members = StaffMember.objects.all()
-    return render(request, 'rendezvous2/staff_member_list.html', {'staff_members': staff_members})
+    return render(request, 'staff_member_list.html', {'staff_members': staff_members})
 
 @login_required
 def staff_member_create(request):
@@ -105,7 +109,7 @@ def staff_member_create(request):
             return redirect('rendezvous2:staff_member_list')
     else:
         form = StaffMemberForm()
-    return render(request, 'rendezvous2/staff_member_form.html', {'form': form})
+    return render(request, 'staff_member_form.html', {'form': form})
 
 @login_required
 def staff_member_update(request, pk):
@@ -118,7 +122,7 @@ def staff_member_update(request, pk):
             return redirect('rendezvous2:staff_member_list')
     else:
         form = StaffMemberForm(instance=staff_member)
-    return render(request, 'rendezvous2/staff_member_form.html', {'form': form})
+    return render(request, 'staff_member_form.html', {'form': form})
 
 @login_required
 def staff_member_delete(request, pk):
@@ -127,13 +131,13 @@ def staff_member_delete(request, pk):
         staff_member.delete()
         messages.success(request, 'Membre du personnel supprimé avec succès.')
         return redirect('rendezvous2:staff_member_list')
-    return render(request, 'rendezvous2/staff_member_confirm_delete.html', {'staff_member': staff_member})
+    return render(request, 'staff_member_confirm_delete.html', {'staff_member': staff_member})
 
 # Availability views
 @login_required
 def availability_list(request):
     availabilities = Availability.objects.all()
-    return render(request, 'rendezvous2/availability_list.html', {'availabilities': availabilities})
+    return render(request, 'availability_list.html', {'availabilities': availabilities})
 
 @login_required
 def availability_create(request):
@@ -145,7 +149,7 @@ def availability_create(request):
             return redirect('rendezvous2:availability_list')
     else:
         form = AvailabilityForm()
-    return render(request, 'rendezvous2/availability_form.html', {'form': form})
+    return render(request, 'availability_form.html', {'form': form})
 
 @login_required
 def availability_update(request, pk):
@@ -158,7 +162,7 @@ def availability_update(request, pk):
             return redirect('rendezvous2:availability_list')
     else:
         form = AvailabilityForm(instance=availability)
-    return render(request, 'rendezvous2/availability_form.html', {'form': form})
+    return render(request, 'availability_form.html', {'form': form})
 
 @login_required
 def availability_delete(request, pk):
@@ -167,13 +171,13 @@ def availability_delete(request, pk):
         availability.delete()
         messages.success(request, 'Disponibilité supprimée avec succès.')
         return redirect('rendezvous2:availability_list')
-    return render(request, 'rendezvous2/availability_confirm_delete.html', {'availability': availability})
+    return render(request, 'availability_confirm_delete.html', {'availability': availability})
 
 # Conflict views
 @login_required
 def conflict_list(request):
     conflicts = Conflict.objects.all()
-    return render(request, 'rendezvous2/conflict_list.html', {'conflicts': conflicts})
+    return render(request, 'conflict_list.html', {'conflicts': conflicts})
 
 @login_required
 def conflict_create(request):
@@ -185,7 +189,7 @@ def conflict_create(request):
             return redirect('rendezvous2:conflict_list')
     else:
         form = ConflictForm()
-    return render(request, 'rendezvous2/conflict_form.html', {'form': form})
+    return render(request, 'conflict_form.html', {'form': form})
 
 @login_required
 def conflict_update(request, pk):
@@ -198,7 +202,7 @@ def conflict_update(request, pk):
             return redirect('rendezvous2:conflict_list')
     else:
         form = ConflictForm(instance=conflict)
-    return render(request, 'rendezvous2/conflict_form.html', {'form': form})
+    return render(request, 'conflict_form.html', {'form': form})
 
 @login_required
 def conflict_delete(request, pk):
@@ -207,4 +211,4 @@ def conflict_delete(request, pk):
         conflict.delete()
         messages.success(request, 'Conflit supprimé avec succès.')
         return redirect('rendezvous2:conflict_list')
-    return render(request, 'rendezvous2/conflict_confirm_delete.html', {'conflict': conflict})
+    return render(request, 'conflict_confirm_delete.html', {'conflict': conflict})
