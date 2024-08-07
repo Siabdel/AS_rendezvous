@@ -47,8 +47,6 @@ urlpatterns = [
     path('conflicts/create/', views.conflict_create, name='conflict_create'),
     path('conflicts/<int:pk>/update/', views.conflict_update, name='conflict_update'),
     path('conflicts/<int:pk>/delete/', views.conflict_delete, name='conflict_delete'),
-    # fullcalendar
-    path('fullcalendar/', views.fullcalendar, name='fullcalendar'),
     
     # API URLs
     path('api/', include(router.urls)),

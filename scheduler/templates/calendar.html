@@ -1,14 +1,17 @@
 
-{% extends "base.html" %}
-{% load static scheduletags %}
+{% extends "scheduler_base.html" %}
+{% load static %}
+{% load scheduletags %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'bower_components/fullcalendar/dist/fullcalendar.min.css' %}">
 {% endblock %}
 
 {% block content %}
-<h1>{{ calendar.name }}</h1>
-<div id="calendar"></div>
+
+    <h1>{{ calendar.name }}</h1>
+    <div id="calendar"></div>
+
 {% endblock %}
 
 {% block extra_js %}
@@ -17,7 +20,8 @@
 <script>
 $(document).ready(function() {
     $('#calendar').fullCalendar({
-        events: '{% url "rendezvous:calendar_events" calendar.slug %}',
+        //events: '{% url "scheduler:calendar_events" calendar.slug %}',
+        events : 'http://localhost:8000/api/v2/events/',
         header: {
             left: 'prev,next today',
             center: 'title',

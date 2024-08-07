@@ -6,7 +6,7 @@
 <h1>Calendriers</h1>
 <ul>
     {% for calendar in calendars %}
-    <li><a href="{% url 'rendezvous:calendar' calendar.slug %}">{{ calendar.name }}</a></li>
+    <li><a href="{% url 'scheduler:calendar_view' calendar.slug %}">{{ calendar.name }}</a></li>
     {% endfor %}
 </ul>
 {% endblock %}

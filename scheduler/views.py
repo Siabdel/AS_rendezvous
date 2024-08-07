@@ -1,17 +1,26 @@
 from django.shortcuts import render, redirect
 from schedule.models import Calendar, Event
+from django.contrib.auth.decorators import login_required
 from django.views.generic import TemplateView
 from schedule.views import CalendarByPeriodsView
 from .forms import EventForm
 
 class RendezvousCalendarView(CalendarByPeriodsView):
-    template_name = 'rendezvous/calendar.html'
+    template_name = 'calendar.html'
 
+@login_required
+def fullcalendar(request):
+    
+    calendar = Calendar.objects.get(id=2)
+    return render(request, 'fullcalendar.html', locals())
+
+@login_required
 def calendar_list(request):
     calendars = Calendar.objects.all()
-    return render(request, 'rendezvous/calendar_list.html', {'calendars': calendars})
+    return render(request, 'calendar_list.html', {'calendars': calendars})
 
 
+@login_required
 def calendar_view(request, calendar_slug):
     calendar = Calendar.objects.get(slug=calendar_slug)
     events = Event.objects.filter(calendar=calendar)
@@ -19,6 +28,7 @@ def calendar_view(request, calendar_slug):
 
 
 
+@login_required
 def event_create(request):
     if request.method == 'POST':
         form = EventForm(request.POST)

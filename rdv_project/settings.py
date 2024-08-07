@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'rest_framework', # new
     'rest_framework.authtoken',
     "dj_rest_auth",
+    'drf_yasg', # API endpoints docs
     # debug tools
     'debug_toolbar', # new
     'django_extensions', # new

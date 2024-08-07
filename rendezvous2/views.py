@@ -8,9 +8,6 @@ from .forms import CustomAppointmentForm, CustomServiceForm, StaffMemberForm, Av
 def home(request):
     return render(request, 'home_page.html')
 
-@login_required
-def fullcalendar(request):
-    return render(request, 'fullcalendar.html')
 
 
 # Appointment views
