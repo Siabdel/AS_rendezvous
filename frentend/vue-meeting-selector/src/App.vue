@@ -29,7 +29,7 @@ export default {
     return {
       date: new Date(),
       meetingsDays: [],
-      meeting: { date: "2021-01-19T:09:00.000Z" },
+      meeting: { date: "2024-08-07T:09:00.000Z" },
       loading: true,
       nbDaysToDisplay: 5,
     };
